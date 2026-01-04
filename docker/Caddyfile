@@ -1,11 +1,15 @@
+# WELLNESS•GLOBE Solutions
+# Caddy configuration
+
 wellnessglobe.net, www.wellnessglobe.net {
+    # Set site root
     root * /var/www/html
+    
+    # Enable file server
     file_server
     
-    # Handle /solutions path
-    handle /solutions* {
-        try_files {path} /solutions/index.html
-    }
+    # Try files - enables clean URLs
+    try_files {path} {path}/ /solutions/index.html
     
     # Compression
     encode gzip zstd
