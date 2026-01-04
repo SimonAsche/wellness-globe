@@ -1,5 +1,5 @@
 # WELLNESS•GLOBE Solutions
-# Caddy configuration
+# Caddy configuration for React SPA
 
 wellnessglobe.net, www.wellnessglobe.net {
     # Set site root
@@ -8,8 +8,8 @@ wellnessglobe.net, www.wellnessglobe.net {
     # Enable file server
     file_server
     
-    # Try files - enables clean URLs
-    try_files {path} {path}/ /solutions/index.html
+    # SPA fallback - serve index.html for all routes
+    try_files {path} /index.html
     
     # Compression
     encode gzip zstd
@@ -22,9 +22,15 @@ wellnessglobe.net, www.wellnessglobe.net {
         Strict-Transport-Security "max-age=31536000; includeSubDomains"
     }
     
-    # Cache static assets
+    # Cache static assets aggressively
     @static {
-        path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.woff2
+        path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.woff2 *.woff *.ttf *.ico
     }
-    header @static Cache-Control "public, max-age=31536000"
+    header @static Cache-Control "public, max-age=31536000, immutable"
+    
+    # Don't cache index.html
+    @html {
+        path *.html
+    }
+    header @html Cache-Control "no-cache, must-revalidate"
 }
